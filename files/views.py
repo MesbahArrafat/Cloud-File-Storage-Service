@@ -65,7 +65,8 @@ class FileUploadView(APIView):
         file_size = uploaded_file.size
 
         if file_size > settings.MAX_UPLOAD_SIZE:
-            raise ValidationError({'file': f'File size exceeds the 100MB limit.'})
+            limit_mb = settings.MAX_UPLOAD_SIZE // (1024 * 1024)
+            raise ValidationError({'file': f'File size exceeds the {limit_mb}MB limit.'})
 
         filename = serializer.validated_data.get('filename') or uploaded_file.name
         folder = serializer.validated_data.get('folder')
@@ -390,7 +391,8 @@ class ChunkUploadCompleteView(APIView):
         total_size = merged.getbuffer().nbytes
 
         if total_size > settings.MAX_UPLOAD_SIZE:
-            raise ValidationError({'detail': 'File size exceeds the 100MB limit.'})
+            limit_mb = settings.MAX_UPLOAD_SIZE // (1024 * 1024)
+            raise ValidationError({'detail': f'File size exceeds the {limit_mb}MB limit.'})
 
         sha256 = hashlib.sha256()
         merged.seek(0)
