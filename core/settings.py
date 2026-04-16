@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from datetime import timedelta
 
@@ -108,3 +109,8 @@ CELERY_TIMEZONE = 'UTC'
 MAX_UPLOAD_SIZE = 100 * 1024 * 1024  # 100MB
 
 CHUNK_UPLOAD_DIR = BASE_DIR / 'chunk_uploads'
+
+# Use eager task execution during tests so no Redis connection is needed
+if 'test' in sys.argv or 'pytest' in sys.modules:
+    CELERY_TASK_ALWAYS_EAGER = True
+    CELERY_TASK_EAGER_PROPAGATES = True
