@@ -10,7 +10,7 @@ class FolderListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Folder.objects.filter(user=self.request.user)
+        return Folder.objects.filter(user=self.request.user).prefetch_related('children')
 
     def perform_create(self, serializer):
         parent = serializer.validated_data.get('parent')
@@ -24,4 +24,4 @@ class FolderDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Folder.objects.filter(user=self.request.user)
+        return Folder.objects.filter(user=self.request.user).prefetch_related('children')

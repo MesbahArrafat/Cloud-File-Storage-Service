@@ -1,1 +1,14 @@
 media/
+__pycache__/
+*.py[cod]
+*.pyo
+db.sqlite3
+*.sqlite3
+.env
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.DS_Store
+
