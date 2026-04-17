@@ -50,12 +50,13 @@ export default function DashboardPage() {
   const fileInputRef = useRef();
 
   const { uploads, uploadMany } = useUpload((newFile) => {
-    setFiles(p => [newFile, ...p]);
+    if (newFile) setFiles(p => [newFile, ...p]);
+    else loadFiles(currentFolder, 1);
   });
 
   useEffect(() => {
     if (!searchQuery) loadFiles(currentFolder, 1);
-  }, [currentFolder, loadFiles, searchQuery]);
+  }, [currentFolder, searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Search
   useEffect(() => {

@@ -4,6 +4,13 @@ import { formatSize, formatDate, getFileIcon } from '../utils/format';
 import s from './SharedFilePage.module.css';
 
 const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:8000/api').replace(/\/$/, '');
+const MEDIA_BASE = API_BASE.replace(/\/api$/, '');
+
+function resolveUrl(url) {
+  if (!url) return url;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `${MEDIA_BASE}${url}`;
+}
 
 export default function SharedFilePage() {
   const { token } = useParams();
@@ -75,9 +82,9 @@ export default function SharedFilePage() {
       <div className={s.card}>
         <div className={s.preview}>
           {file.is_image && file.preview_url
-            ? <img src={file.preview_url} alt={file.filename} className={s.previewImg} />
+            ? <img src={resolveUrl(file.preview_url)} alt={file.filename} className={s.previewImg} />
             : file.is_pdf && file.preview_url
-              ? <iframe src={file.preview_url} title={file.filename} className={s.previewFrame} />
+              ? <iframe src={resolveUrl(file.preview_url)} title={file.filename} className={s.previewFrame} />
               : (
                 <div className={s.noPreview}>
                   <span className={s.fileIcon}>{getFileIcon(file)}</span>

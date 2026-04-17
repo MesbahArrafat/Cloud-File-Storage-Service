@@ -6,6 +6,7 @@ export default function FileCard({ file, selected, onSelect, onClick, onStar, on
   const [menuOpen, setMenuOpen] = useState(false);
   const isImg = file.is_image && file.preview_url;
   const color = getFileColor(file);
+  const isShared = Boolean(file.share_token);
 
   const handleMenu = (e, action) => { e.stopPropagation(); setMenuOpen(false); action(); };
 
@@ -21,6 +22,7 @@ export default function FileCard({ file, selected, onSelect, onClick, onStar, on
             ? <img src={file.preview_url} alt={file.filename} className={s.previewImg} />
             : <span className={s.fileIcon}>{getFileIcon(file)}</span>
           }
+          {isShared && <div className={s.publicBadge}>🔗 Shared</div>}
           <div className={s.ext} style={{ background: color }}>{file.extension?.toUpperCase() || 'FILE'}</div>
         </div>
       ) : (
@@ -37,6 +39,10 @@ export default function FileCard({ file, selected, onSelect, onClick, onStar, on
           <span>{formatDateShort(file.created_at)}</span>
         </div>
       </div>
+
+      {view === 'list' && isShared && (
+        <div className={s.publicBadge}>🔗 Shared</div>
+      )}
 
       <div className={s.actions} onClick={e => e.stopPropagation()}>
         <button className={[s.starBtn, file.is_starred ? s.starred : ''].join(' ')} onClick={() => onStar(file.id)} title="Star">✦</button>

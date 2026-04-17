@@ -44,7 +44,7 @@ export default function ShareModal({ file, onClose }) {
 
   const removeShare = async (shareEmail) => {
     await filesApi.removeShare(file.id, shareEmail);
-    setShares(prev => prev.filter((share) => share.shared_with_email_read !== shareEmail));
+    setShares(prev => prev.filter((sh) => sh.shared_with_email_read !== shareEmail));
     toast.success('Access removed');
   };
 

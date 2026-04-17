@@ -19,6 +19,9 @@
 
 .ext { position:absolute; bottom:8px; right:8px; background:var(--accent); color:#fff; font-size:.6rem; font-weight:700; padding:2px 6px; border-radius:99px; font-family:var(--font-display); letter-spacing:.05em; }
 
+.publicBadge { position:absolute; top:8px; right:8px; background:rgba(52,211,153,.18); color:#34d399; border:1px solid rgba(52,211,153,.35); font-size:.6rem; font-weight:700; padding:2px 7px; border-radius:99px; font-family:var(--font-display); letter-spacing:.04em; display:flex; align-items:center; gap:3px; z-index:2; }
+.list .publicBadge { position:static; margin-left:auto; align-self:center; }
+
 .name { font-size:.875rem; font-weight:500; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px; }
 .meta { display:flex; align-items:center; gap:5px; font-size:.75rem; color:var(--text-muted); }
 .dot { opacity:.5; }

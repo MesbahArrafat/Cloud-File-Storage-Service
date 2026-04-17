@@ -33,7 +33,7 @@ export function FileProvider({ children }) {
     };
   };
 
-  const loadFiles = useCallback(async (folderId = currentFolder, page = 1, { append = false } = {}) => {
+  const loadFiles = useCallback(async (folderId, page = 1, { append = false } = {}) => {
     if (append) setLoadingMore(true);
     else setLoading(true);
 
@@ -59,12 +59,12 @@ export function FileProvider({ children }) {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [currentFolder]);
+  }, []); // stable – folderId is always passed explicitly by callers
 
   const loadMoreFiles = useCallback(async () => {
     if (loading || loadingMore || !fileHasNext) return;
     await loadFiles(currentFolder, filePage + 1, { append: true });
-  }, [currentFolder, fileHasNext, filePage, loadFiles, loading, loadingMore]);
+  }, [currentFolder, fileHasNext, filePage, loading, loadingMore]);
 
   const toggleSelect = (id) => {
     setSelected(prev => {

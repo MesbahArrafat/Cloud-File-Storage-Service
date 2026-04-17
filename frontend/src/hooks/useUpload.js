@@ -44,6 +44,10 @@ export function useUpload(onSuccess) {
         if (uploadedFile) {
           updateUpload(id, { status: 'done', progress: 100, fileData: uploadedFile });
           onSuccess?.(uploadedFile);
+        } else {
+          // Assembly completed but couldn't confirm the file via search – signal parent to refresh.
+          updateUpload(id, { status: 'done', progress: 100 });
+          onSuccess?.(null);
         }
       } else {
         // Regular upload
