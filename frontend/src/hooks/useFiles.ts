@@ -88,3 +88,13 @@ export function useGenerateShareLink() {
     onError: () => toast.error('Failed to generate share link.'),
   });
 }
+
+export function useMoveFile() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, folderId }: { id: string; folderId: string | null }) =>
+      filesApi.move(id, folderId),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: fileKeys.all }); toast.success('File moved.'); },
+    onError: () => toast.error('Failed to move file.'),
+  });
+}

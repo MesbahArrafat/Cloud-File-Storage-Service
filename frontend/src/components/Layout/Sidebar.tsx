@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { HardDrive, Star, Trash2, Activity, Cloud, FolderOpen } from 'lucide-react';
+import { HardDrive, Star, Trash2, Activity, Cloud, FolderOpen, User } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
 const links = [
@@ -7,6 +7,7 @@ const links = [
   { to: '/starred', icon: Star, label: 'Starred' },
   { to: '/trash', icon: Trash2, label: 'Trash' },
   { to: '/activity', icon: Activity, label: 'Activity' },
+  { to: '/profile', icon: User, label: 'Profile' },
 ];
 
 function formatBytes(bytes: number) {

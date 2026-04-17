@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { File, Star, Trash2, Download, Share2, Eye, MoreVertical, RotateCcw, Trash } from 'lucide-react';
+import { File, Star, Trash2, Download, Share2, Eye, MoreVertical, RotateCcw, Trash, FolderInput, Globe } from 'lucide-react';
 import type { File as FileType } from '../../types';
 import { useTrashFile, useRestoreFile, usePermanentDeleteFile, useToggleStar } from '../../hooks/useFiles';
 import { FilePreviewModal } from './FilePreviewModal';
 import { RenameModal } from './RenameModal';
 import { ShareModal } from './ShareModal';
+import { MoveModal } from './MoveModal';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
 
 interface FileCardProps {
@@ -41,6 +42,7 @@ export function FileCard({ file, isTrash, selected, onSelect }: FileCardProps) {
   const [showPreview, setShowPreview] = useState(false);
   const [showRename, setShowRename] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const [showMove, setShowMove] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const { mutate: trashFile } = useTrashFile();
@@ -107,6 +109,7 @@ export function FileCard({ file, isTrash, selected, onSelect }: FileCardProps) {
               {!isTrash && (
                 <>
                   <MenuBtn icon={<File className="h-4 w-4" />} label="Rename" onClick={() => { setShowRename(true); setShowMenu(false); }} />
+                  <MenuBtn icon={<FolderInput className="h-4 w-4" />} label="Move" onClick={() => { setShowMove(true); setShowMenu(false); }} />
                   <MenuBtn icon={<Share2 className="h-4 w-4" />} label="Share" onClick={() => { setShowShare(true); setShowMenu(false); }} />
                   <MenuBtn icon={<Trash2 className="h-4 w-4" />} label="Move to trash" onClick={() => { trashFile(file.id); setShowMenu(false); }} danger />
                 </>
@@ -122,7 +125,14 @@ export function FileCard({ file, isTrash, selected, onSelect }: FileCardProps) {
         </div>
 
         {/* Icon */}
-        <div className="mb-3 text-4xl">{getIcon(file.mime_type)}</div>
+        <div className="mb-3 text-4xl relative inline-block">
+          {getIcon(file.mime_type)}
+          {file.is_public && (
+            <span className="absolute -bottom-1 -right-1 rounded-full bg-blue-100 p-0.5" title="Publicly shared">
+              <Globe className="h-3 w-3 text-blue-600" />
+            </span>
+          )}
+        </div>
 
         {/* Name */}
         <p className="text-sm font-medium text-gray-900 truncate">{file.filename}</p>
@@ -133,6 +143,7 @@ export function FileCard({ file, isTrash, selected, onSelect }: FileCardProps) {
       {showPreview && <FilePreviewModal file={file} onClose={() => setShowPreview(false)} />}
       {showRename && <RenameModal file={file} onClose={() => setShowRename(false)} />}
       {showShare && <ShareModal file={file} onClose={() => setShowShare(false)} />}
+      {showMove && <MoveModal file={file} onClose={() => setShowMove(false)} />}
       <ConfirmDialog
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}

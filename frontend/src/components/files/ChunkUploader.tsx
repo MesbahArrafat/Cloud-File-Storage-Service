@@ -26,7 +26,7 @@ export function ChunkUploader({ folderId, onComplete }: ChunkUploaderProps) {
         const chunk = file.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
         const fd = new FormData();
         fd.append('upload_id', session.upload_id);
-        fd.append('chunk_number', String(i));
+        fd.append('chunk_index', String(i));
         fd.append('chunk', chunk);
         await filesApi.uploadChunk(fd);
         setProgress(Math.round(((i + 1) / totalChunks) * 100));

@@ -31,6 +31,9 @@ export const filesApi = {
   update: (id: string, data: { filename?: string; folder?: string | null; is_public?: boolean; is_starred?: boolean }) =>
     api.patch<File>(`/files/${id}/`, data).then((r) => r.data),
 
+  move: (id: string, folderId: string | null) =>
+    api.patch<File>(`/files/${id}/`, { folder: folderId }).then((r) => r.data),
+
   trash: (id: string) =>
     api.delete(`/files/${id}/`).then((r) => r.data),
 

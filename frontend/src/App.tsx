@@ -11,6 +11,7 @@ import { StarredPage } from './pages/StarredPage';
 import { TrashPage } from './pages/TrashPage';
 import { ActivityPage } from './pages/ActivityPage';
 import { SharedFilePage } from './pages/SharedFilePage';
+import { ProfilePage } from './pages/ProfilePage';
 import { Spinner } from './components/ui/Spinner';
 
 const queryClient = new QueryClient({
@@ -40,6 +41,7 @@ function AppRoutes() {
         <Route path="/starred" element={<StarredPage />} />
         <Route path="/trash" element={<TrashPage />} />
         <Route path="/activity" element={<ActivityPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

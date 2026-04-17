@@ -193,15 +193,22 @@ class PublicShareView(APIView):
 
     def get(self, request, token):
         file_obj = get_object_or_404(File, share_token=token, is_public=True, is_deleted=False)
-        if not file_obj.file:
-            raise Http404
-        log_activity.delay(
-            str(request.user.id) if request.user.is_authenticated else None,
-            str(file_obj.id), ActivityLog.ACTION_DOWNLOAD, get_client_ip(request), {'via_share_link': True}
-        )
-        return FileResponse(file_obj.file.open('rb'),
-                            content_type=file_obj.mime_type or 'application/octet-stream',
-                            as_attachment=True, filename=file_obj.original_filename)
+        if request.query_params.get('action') == 'download':
+            if not file_obj.file:
+                raise Http404
+            log_activity.delay(
+                str(request.user.id) if request.user.is_authenticated else None,
+                str(file_obj.id), ActivityLog.ACTION_DOWNLOAD, get_client_ip(request), {'via_share_link': True}
+            )
+            return FileResponse(file_obj.file.open('rb'),
+                                content_type=file_obj.mime_type or 'application/octet-stream',
+                                as_attachment=True, filename=file_obj.original_filename)
+        return Response({
+            'filename': file_obj.original_filename,
+            'size': file_obj.size,
+            'mime_type': file_obj.mime_type,
+            'share_token': str(file_obj.share_token),
+        })
 
 
 class FilePermissionView(APIView):
